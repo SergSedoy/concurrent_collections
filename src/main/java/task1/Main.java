@@ -4,29 +4,28 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Main {
     public static boolean night = false;
-    public static ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();
-    final static long lengthDay = 4000;
-    final static long coffeeBreak = 500;
+    final static long LENGTH_DAY = 4000;
+    final static long COFFEE_BREAK = 500;
 
     public static void main(String[] args) throws InterruptedException {
-
-        new CallCenter("ATC").start();
+        ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();
+        new CallCenter("ATC", queue).start();
 
         try {
-            Thread.sleep(coffeeBreak);
+            Thread.sleep(COFFEE_BREAK);
         } catch(InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println("в очереди " + queue.size() + " звонков");
-        new Specialist("первый").start();
-        new Specialist("второй").start();
-        new Specialist("третий").start();
-        new Specialist("четвертый").start();
-        new Specialist("пятый").start();
-        new Specialist("шестой").start();
+        new Specialist("первый", queue).start();
+        new Specialist("второй", queue).start();
+        new Specialist("третий", queue).start();
+        new Specialist("четвертый", queue).start();
+        new Specialist("пятый", queue).start();
+        new Specialist("шестой", queue).start();
 
         try {
-            Thread.sleep(lengthDay);
+            Thread.sleep(LENGTH_DAY);
         } catch(InterruptedException e) {
             e.printStackTrace();
         }
@@ -34,3 +33,5 @@ public class Main {
         System.out.println("звонки закончились, в очереди " + queue.size() + " звонков");
     }
 }
+
+// в задаче 1 выбрана потокобезопасная очередь ConcurrentLinkedQueue, потому что работает не на массиве, соответственно - быстро, также отсутствует блокировка потоков.

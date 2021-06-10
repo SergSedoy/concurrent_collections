@@ -1,24 +1,28 @@
 package task1;
 
-public class Specialist extends Thread {
-    final long workOnBell = 3000;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-    public Specialist(String name) {
+public class Specialist extends Thread {
+    private long workOnBell = 3000;
+    private ConcurrentLinkedQueue<String> queue;
+
+    public Specialist(String name, ConcurrentLinkedQueue<String> queue) {
         super(name);
+        this.queue = queue;
     }
 
     @Override
     public void run() {
 
-        while (!Main.queue.isEmpty()) {
-            Main.queue.remove();
+        while (!queue.isEmpty()) {
+
             try {
+                System.out.println(Thread.currentThread().getName() + " взял в работу " + queue.remove());
                 Thread.sleep(workOnBell);
-                System.out.println(Thread.currentThread().getName() + " взял в работу звонок");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("в очереди " + Main.queue.size() + " звонков");
+            System.out.println("в очереди " + queue.size() + " звонков");
         }
         System.out.println("оператор " + Thread.currentThread().getName() + " завершил работу");
     }
