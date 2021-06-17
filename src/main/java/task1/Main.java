@@ -6,6 +6,8 @@ public class Main {
     public static boolean night = false;
     final static long LENGTH_DAY = 4000;
     final static long COFFEE_BREAK = 500;
+    final static long INTERVAL = 17; // 58 звонков в секунду
+
 
     public static void main(String[] args) throws InterruptedException {
         ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();

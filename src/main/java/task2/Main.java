@@ -3,30 +3,27 @@ package task2;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
-    public static final int COUNT_ITER = 9200000;
+    public static final int COUNT_ITER = 92000000;
 
     public static void main(String[] args) {
 
         ConcurrentHashMap<Integer, String> mapaConcurrent = new ConcurrentHashMap<>();
-        new Cunc(mapaConcurrent).start();
-        new Cunc(mapaConcurrent).start();
-        new Cunc(mapaConcurrent).start();
+        Map<Object, Object> mapaSync = Collections.synchronizedMap(new HashMap<>());
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        Runnable task1 = new Cunc(mapaConcurrent);
+        Runnable task2 = new Cunc(mapaSync);
+        ExecutorService service = Executors.newFixedThreadPool(6);
+        for (int i = 0; i < 3; i++) {
+            service.submit(task1);
+            service.submit(task2);
         }
-
-        System.out.println("далее тест \"Collections.synchronizedMap\"");
-
-         Map<Object, Object> mapaSync = Collections.synchronizedMap(new HashMap<>());
-         new Synch(mapaSync).start();
-         new Synch(mapaSync).start();
-         new Synch(mapaSync).start();
+        System.out.println("Идет тестирование на время...");
+        service.shutdown();
     }
 }

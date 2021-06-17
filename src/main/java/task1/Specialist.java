@@ -17,7 +17,7 @@ public class Specialist extends Thread {
         while (!queue.isEmpty()) {
 
             try {
-                System.out.println(Thread.currentThread().getName() + " взял в работу " + queue.remove());
+                System.out.println(Thread.currentThread().getName() + " взял в работу " + queue.poll());
                 Thread.sleep(workOnBell);
             } catch (InterruptedException e) {
                 e.printStackTrace();
